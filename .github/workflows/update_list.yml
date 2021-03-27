@@ -1,35 +1,31 @@
-name: update_list
-
-
+# File: .github/workflows/repo-sync.yml
+name: sync- danwangshimoluo -scripts
 on:
+  schedule:
+    - cron: '1 0,15 * * *'
   workflow_dispatch:
-  #schedule:
-    #- cron: '1 5,17 * * *'
-  repository_dispatch:
-    types: update_list
+  watch:
+    types: started
   push:
-    branches: [ master ]
+    branches: [ main ]
+  repository_dispatch:
+    types: sync- danwangshimoluo -scripts
 jobs:
-  build:
+  repo-sync:
+    env:
+      PAT: ${{ secrets.PAT }} #此处PAT需要申请，教程详见：https://www.jianshu.com/p/bb82b3ad1d11
     runs-on: ubuntu-latest
-    #if: github.event.repository.owner.id == github.event.sender.id
+    if: github.event.repository.owner.id == github.event.sender.id
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
         with:
-          repository: ${{ github.repository }}
+          persist-credentials: false
 
-      - name: "更新Readme中脚本清单列表"
-        run: |
-          bash update_list.sh
-      - name: commit
-        run: |
-          git config --global user.email ${{ secrets.EMAIL }}
-          git config --global user.name lxk0301
-          git add .
-          git commit -m "更新Readme中脚本清单列表 by lxk0301 Github Action" -a || echo "Nothing to update"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: sync  danwangshimoluo -scripts
+        uses: repo-sync/github-sync@v2
+        if: env.PAT
         with:
-          github_token: ${{ secrets.TOKEN }}
-          branch: master
+          source_repo: "https://github.com/danwangshimoluo/JdScripts.git"
+          source_branch: "main"
+          destination_branch: "main"
+          github_token: ${{ secrets.PAT }}
