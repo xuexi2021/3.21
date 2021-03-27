@@ -12,7 +12,7 @@
 
 =====================================Loon================================
 [Script]
-cron "1 7-21/2 * * *" script-path=https://raw.githubusercontent.com/LXK9301/jd_scripts/master/jd_plantBean.js,tag=京东种豆得豆
+cron "0 0 * * *" script-path=https://raw.githubusercontent.com/LXK9301/jd_scripts/master/jd_plantBean.js,tag=京东种豆得豆
 
 ======================================Surge==========================
 京东种豆得豆 = type=cron,cronexp="1 7-21/2 * * *",wake-system=1,timeout=120,script-path=https://raw.githubusercontent.com/LXK9301/jd_scripts/master/jd_plantBean.js
